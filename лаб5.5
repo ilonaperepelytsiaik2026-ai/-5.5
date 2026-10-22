@@ -1,0 +1,69 @@
+#include <iostream>
+#include <iomanip>
+#include <cassert>
+
+using namespace std;
+
+// Глобальні змінні для відстеження глибини рекурсії
+int current_depth = 0;
+int max_depth = 0;
+
+/**
+ * Рекурсивна функція для обчислення елемента трикутника Паскаля C(i, j)
+ * @param i - номер стрічки
+ * @param j - номер елемента в стрічці
+ * @param level - теперішній рівень рекурсії
+ * @return значення елемента трикутника Паскаля
+ */
+int pascal(int i, int j, int level) {
+    // Оновлюємо максимальну глибину рекурсії
+    if (level > max_depth) {
+        max_depth = level;
+    }
+
+    // Базові випадки
+    if (j == 0 || j == i) {
+        return 1;
+    }
+
+    // Рекурсивний крок
+    return pascal(i - 1, j - 1, level + 1) + pascal(i - 1, j, level + 1);
+}
+
+// Функція для unit-тестування
+void test_pascal() {
+    max_depth = 0;
+    assert(pascal(0, 0, 1) == 1);
+    assert(pascal(2, 1, 1) == 2);
+    assert(pascal(4, 2, 1) == 6);
+    cout << "Unit-tests passed successfully!" << endl;
+}
+
+int main() {
+    // Запуск unit-тестів
+    test_pascal();
+
+    int n;
+    cout << "Enter number of rows: ";
+    cin >> n;
+
+    cout << "\nPascal Triangle:\n";
+    for (int i = 0; i < n; ++i) {
+        for (int space = 0; space < n - i - 1; ++space) {
+            cout << "  ";
+        }
+        for (int j = 0; j <= i; ++j) {
+            cout << setw(4) << pascal(i, j, 1);
+        }
+        cout << endl;
+    }
+
+    // Пошук максимальної глибини рекурсії для останнього рядка
+    max_depth = 0;
+    if (n > 0) {
+        pascal(n - 1, (n - 1) / 2, 1);
+    }
+    cout << "\nMax recursion depth: " << max_depth << endl;
+
+    return 0;
+}
