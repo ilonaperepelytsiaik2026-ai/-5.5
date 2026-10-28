@@ -1,0 +1,76 @@
+/* Lab_6.1.cpp
+Перепелиця Ілона 
+Лабораторна робота 6.1 
+Пошук елементів одновимірного масиву ітераційним способом Варіант 11 */
+
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+// --- Прототипи функцій ---
+bool isMatch(int x);
+void generateArray(int* c, int size, int low, int high);
+void printArray(const int* c, int size);
+int countMatchingElements(const int* c, int size);
+int sumMatchingElements(const int* c, int size);
+void replaceMatchingWithZero(int* c, int size);
+
+int main() {
+    srand((unsigned)time(0));
+    const int SIZE = 27;
+    int c[SIZE];
+
+    generateArray(c, SIZE, -35, 25);
+
+    cout << "Initial array:\n";
+    printArray(c, SIZE);
+
+    int count = countMatchingElements(c, SIZE);
+    int sum = sumMatchingElements(c, SIZE);
+
+    replaceMatchingWithZero(c, SIZE);
+
+    cout << "\nCount = " << count << "\nSum = " << sum << "\n\nModified array:\n";
+    printArray(c, SIZE);
+
+    return 0;
+}
+
+// --- Реалізація функцій ---
+bool isMatch(int x) {
+    return (x > 0) || (x % 2 != 0);
+}
+
+void generateArray(int* c, int size, int low, int high) {
+    for (int i = 0; i < size; i++) c[i] = low + rand() % (high - low + 1);
+}
+
+void printArray(const int* c, int size) {
+    for (int i = 0; i < size; i++) cout << setw(4) << c[i];
+    cout << endl;
+}
+
+int countMatchingElements(const int* c, int size) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+        if (isMatch(c[i])) count++;
+    }
+    return count;
+}
+
+int sumMatchingElements(const int* c, int size) {
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        if (isMatch(c[i])) sum += c[i];
+    }
+    return sum;
+}
+
+void replaceMatchingWithZero(int* c, int size) {
+    for (int i = 0; i < size; i++) {
+        if (isMatch(c[i])) c[i] = 0;
+    }
+}
